@@ -5,7 +5,7 @@
 [![Wazuh](https://img.shields.io/badge/Wazuh-4.x-orange.svg)](https://wazuh.com)
 [![Status](https://img.shields.io/badge/status-production--ready-brightgreen.svg)]()
 
-> **Custom-branded Wazuh deployment by SentinelCore** — Enterprise-grade security monitoring, threat detection, and compliance management.
+> **SentinelCore** — Enterprise-grade security monitoring, threat detection, and compliance management.
 
 ---
 
