@@ -1,0 +1,75 @@
+<!--
+  ============================================================================
+  SentinelCore - Custom Company Security Policies
+  ============================================================================
+  Define organization-specific security rules here.
+  Rule IDs: 115000-115999 reserved for custom company policies.
+  ============================================================================
+-->
+
+<group name="sentinelcore,company_policy,">
+
+  <!-- Working hours violation -->
+  <rule id="115001" level="8">
+    <if_sid>5715</if_sid>
+    <time>12:00am - 5:00am</time>
+    <description>SentinelCore Policy: Login outside business hours by $(srcuser) from $(srcip).</description>
+    <group>company_policy,after_hours_access,</group>
+  </rule>
+
+  <!-- Sensitive directory access -->
+  <rule id="115010" level="10">
+    <if_sid>550</if_sid>
+    <match>/etc/shadow|/etc/gshadow|/etc/sudoers.d</match>
+    <description>SentinelCore Policy: Sensitive credential file accessed/modified.</description>
+    <group>company_policy,sensitive_file,</group>
+  </rule>
+
+  <!-- Unauthorized package installation -->
+  <rule id="115020" level="7">
+    <if_sid>5402</if_sid>
+    <match>apt-get install|yum install|dnf install|pip install</match>
+    <description>SentinelCore Policy: Package installation detected by $(srcuser).</description>
+    <group>company_policy,software_install,</group>
+  </rule>
+
+  <!-- USB device connection -->
+  <rule id="115030" level="6">
+    <if_sid>533</if_sid>
+    <match>usb</match>
+    <description>SentinelCore Policy: USB device connection detected on $(hostname).</description>
+    <group>company_policy,usb_device,</group>
+  </rule>
+
+  <!-- Account lockout -->
+  <rule id="115040" level="10" frequency="5" timeframe="300">
+    <if_matched_sid>5710</if_matched_sid>
+    <same_srcuser />
+    <description>SentinelCore Policy: Account lockout trigger - $(srcuser) has too many failed attempts.</description>
+    <group>company_policy,account_lockout,</group>
+  </rule>
+
+  <!-- Large file transfer -->
+  <rule id="115050" level="7">
+    <if_sid>5402</if_sid>
+    <match>scp|rsync|sftp</match>
+    <description>SentinelCore Policy: File transfer operation detected by $(srcuser).</description>
+    <group>company_policy,data_transfer,</group>
+  </rule>
+
+  <!-- New user creation -->
+  <rule id="115060" level="8">
+    <if_sid>5901</if_sid>
+    <description>SentinelCore Policy: New user account created on $(hostname).</description>
+    <group>company_policy,user_creation,</group>
+  </rule>
+
+  <!-- Service status change -->
+  <rule id="115070" level="7">
+    <if_sid>5402</if_sid>
+    <match>systemctl stop|systemctl disable|service stop</match>
+    <description>SentinelCore Policy: Service stopped/disabled on $(hostname).</description>
+    <group>company_policy,service_change,</group>
+  </rule>
+
+</group>

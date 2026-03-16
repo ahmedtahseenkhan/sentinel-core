@@ -1,0 +1,151 @@
+# ============================================================================
+# SentinelCore - Security Configuration Assessment (SCA) Policies
+# ============================================================================
+# Custom SCA policy definitions for SentinelCore deployments.
+# These policies define checks for system hardening compliance.
+# ============================================================================
+
+policy:
+  id: "sentinelcore_baseline"
+  file: "sentinelcore_baseline.yml"
+  name: "SentinelCore Security Baseline"
+  description: "Baseline security checks for SentinelCore managed endpoints"
+  references:
+    - https://www.cisecurity.org/benchmark
+    - https://www.nist.gov/cyberframework
+
+requirements:
+  title: "SentinelCore Baseline Requirements"
+  description: "Check prerequisites for SentinelCore security baseline"
+  condition: all
+  rules:
+    - "f:/etc/os-release -> r:^ID="
+
+# ============================================================================
+# Checks
+# ============================================================================
+checks:
+
+  # --- SSH Hardening ---
+  - id: 10001
+    title: "Ensure SSH Protocol 2 is used"
+    description: "SSH protocol 2 is more secure than protocol 1"
+    rationale: "Protocol 1 has known cryptographic weaknesses"
+    remediation: "Set 'Protocol 2' in /etc/ssh/sshd_config"
+    compliance:
+      - cis: ["5.2.4"]
+      - pci_dss: ["2.2.4"]
+    condition: all
+    rules:
+      - 'f:/etc/ssh/sshd_config -> r:^Protocol\s+2'
+
+  - id: 10002
+    title: "Ensure SSH root login is disabled"
+    description: "Direct root login via SSH should be disabled"
+    rationale: "Prevents root from being targeted by brute force attacks"
+    remediation: "Set 'PermitRootLogin no' in /etc/ssh/sshd_config"
+    compliance:
+      - cis: ["5.2.10"]
+      - pci_dss: ["8.1.1"]
+    condition: all
+    rules:
+      - 'f:/etc/ssh/sshd_config -> r:^PermitRootLogin\s+no'
+
+  - id: 10003
+    title: "Ensure SSH MaxAuthTries is set to 4 or less"
+    description: "Limit SSH authentication attempts"
+    rationale: "Reduces exposure to brute force attacks"
+    remediation: "Set 'MaxAuthTries 4' in /etc/ssh/sshd_config"
+    compliance:
+      - cis: ["5.2.7"]
+    condition: all
+    rules:
+      - 'f:/etc/ssh/sshd_config -> n:^MaxAuthTries\s+(\d+) compare <= 4'
+
+  # --- Password Policy ---
+  - id: 10010
+    title: "Ensure password minimum length is 12 or more"
+    description: "Minimum password length policy"
+    rationale: "Longer passwords are harder to crack"
+    remediation: "Set 'minlen = 12' in /etc/security/pwquality.conf"
+    compliance:
+      - cis: ["5.4.1"]
+      - pci_dss: ["8.2.3"]
+    condition: all
+    rules:
+      - 'f:/etc/security/pwquality.conf -> n:^minlen\s*=\s*(\d+) compare >= 12'
+
+  - id: 10011
+    title: "Ensure password expiration is 90 days or less"
+    description: "Maximum password age policy"
+    rationale: "Limits exposure from compromised credentials"
+    remediation: "Set 'PASS_MAX_DAYS 90' in /etc/login.defs"
+    compliance:
+      - pci_dss: ["8.2.4"]
+    condition: all
+    rules:
+      - 'f:/etc/login.defs -> n:^PASS_MAX_DAYS\s+(\d+) compare <= 90'
+
+  # --- Filesystem ---
+  - id: 10020
+    title: "Ensure /tmp is a separate partition"
+    description: "The /tmp directory should be on a separate partition"
+    rationale: "Prevents /tmp from filling the root filesystem"
+    remediation: "Create a separate partition or tmpfs for /tmp"
+    compliance:
+      - cis: ["1.1.2"]
+    condition: all
+    rules:
+      - 'c:mount -> r:/tmp'
+
+  - id: 10021
+    title: "Ensure noexec option on /tmp partition"
+    description: "Prevent execution of binaries from /tmp"
+    rationale: "Reduces attack surface by preventing code execution from /tmp"
+    remediation: "Add 'noexec' option to /tmp mount in /etc/fstab"
+    compliance:
+      - cis: ["1.1.4"]
+    condition: all
+    rules:
+      - 'c:mount -> r:/tmp\s && r:noexec'
+
+  # --- Firewall ---
+  - id: 10030
+    title: "Ensure firewall is active"
+    description: "A host-based firewall should be enabled"
+    rationale: "Controls network traffic at the host level"
+    remediation: "Enable ufw or firewalld"
+    compliance:
+      - cis: ["3.4.1.1"]
+      - pci_dss: ["1.1"]
+    condition: any
+    rules:
+      - 'c:systemctl is-active ufw -> r:active'
+      - 'c:systemctl is-active firewalld -> r:active'
+      - 'c:iptables -L -> r:Chain INPUT'
+
+  # --- Logging ---
+  - id: 10040
+    title: "Ensure rsyslog or syslog-ng is installed"
+    description: "A logging service must be installed"
+    rationale: "Required for security event logging"
+    remediation: "Install rsyslog or syslog-ng"
+    compliance:
+      - cis: ["4.2.1"]
+      - pci_dss: ["10.1"]
+    condition: any
+    rules:
+      - 'c:dpkg -l rsyslog -> r:^ii'
+      - 'c:rpm -q rsyslog -> r:rsyslog-'
+      - 'c:dpkg -l syslog-ng -> r:^ii'
+
+  - id: 10041
+    title: "Ensure audit logging is enabled"
+    description: "The audit daemon should be running"
+    rationale: "Provides detailed system activity logging"
+    remediation: "Enable and start auditd service"
+    compliance:
+      - pci_dss: ["10.2"]
+    condition: all
+    rules:
+      - 'c:systemctl is-active auditd -> r:active'

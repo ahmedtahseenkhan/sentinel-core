@@ -1,0 +1,13 @@
+# ============================================================================
+# SentinelCore - Wazuh Module for Filebeat
+# ============================================================================
+
+- module: wazuh
+  alerts:
+    enabled: true
+    # Path to Wazuh alerts JSON file
+    var.paths: ["/var/ossec/logs/alerts/alerts.json"]
+  archives:
+    enabled: false
+    # Uncomment to also forward archives
+    # var.paths: ["/var/ossec/logs/archives/archives.json"]

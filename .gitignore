@@ -1,0 +1,112 @@
+# ============================================================================
+# SentinelCore .gitignore
+# ============================================================================
+
+# --- Certificates and Keys ---
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.jks
+*.keystore
+*.truststore
+certificates/certs/
+certificates/output/
+
+# --- Secrets and Credentials ---
+*.env
+.env.*
+!.env.example
+!.env.template
+*-env-template
+secrets/
+credentials/
+
+# --- Logs ---
+*.log
+logs/
+/var/log/
+ossec.log
+cluster.log
+
+# --- Wazuh Data ---
+*.db
+*.sqlite
+queue/
+var/
+stats/
+etc/lists/
+etc/shared/ar.conf
+
+# --- Binaries and Compiled Files ---
+*.o
+*.so
+*.dylib
+*.exe
+*.dll
+*.bin
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+*.whl
+
+# --- Runtime Data ---
+*.pid
+*.sock
+*.lock
+/tmp/
+/var/run/
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# --- IDE Files ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+*.egg
+
+# --- Node.js ---
+node_modules/
+package-lock.json
+
+# --- Backup Files ---
+*.bak
+*.backup
+*.old
+backups/
+
+# --- OpenSearch / Indexer Data ---
+indexer/data/
+indexer/logs/
+nodes/
+
+# --- Filebeat ---
+filebeat/data/
+filebeat/logs/
+registry/
+
+# --- Temporary Files ---
+*.tmp
+*.temp
+.cache/

@@ -1,0 +1,141 @@
+{
+  "name": "SentinelCore MITRE ATT&CK Mapping",
+  "description": "Mapping of SentinelCore detection rules to MITRE ATT&CK framework",
+  "version": "13.0",
+  "framework": "MITRE ATT&CK Enterprise",
+  "mappings": {
+    "tactics": {
+      "TA0001": {
+        "name": "Initial Access",
+        "techniques": {
+          "T1078": {
+            "name": "Valid Accounts",
+            "rule_ids": ["5715", "5716", "100030"],
+            "description": "Monitors for use of valid credentials"
+          },
+          "T1190": {
+            "name": "Exploit Public-Facing Application",
+            "rule_ids": ["100021", "110030"],
+            "description": "Detects web application exploitation"
+          }
+        }
+      },
+      "TA0003": {
+        "name": "Persistence",
+        "techniques": {
+          "T1053": {
+            "name": "Scheduled Task/Job",
+            "rule_ids": ["100020"],
+            "description": "Monitors cron/scheduled task changes"
+          },
+          "T1505": {
+            "name": "Server Software Component",
+            "sub_techniques": {
+              "T1505.003": {
+                "name": "Web Shell",
+                "rule_ids": ["100021"],
+                "description": "Detects web shell deployment"
+              }
+            }
+          }
+        }
+      },
+      "TA0004": {
+        "name": "Privilege Escalation",
+        "techniques": {
+          "T1548": {
+            "name": "Abuse Elevation Control Mechanism",
+            "sub_techniques": {
+              "T1548.003": {
+                "name": "Sudo and Sudo Caching",
+                "rule_ids": ["100030", "100031"],
+                "description": "Monitors sudo usage and violations"
+              }
+            }
+          }
+        }
+      },
+      "TA0005": {
+        "name": "Defense Evasion",
+        "techniques": {
+          "T1014": {
+            "name": "Rootkit",
+            "rule_ids": ["100040"],
+            "description": "Detects rootkit installation"
+          },
+          "T1036": {
+            "name": "Masquerading",
+            "rule_ids": ["100041"],
+            "description": "Detects trojan/masquerading activity"
+          },
+          "T1070": {
+            "name": "Indicator Removal",
+            "rule_ids": ["521"],
+            "description": "Detects log tampering/deletion"
+          }
+        }
+      },
+      "TA0006": {
+        "name": "Credential Access",
+        "techniques": {
+          "T1110": {
+            "name": "Brute Force",
+            "sub_techniques": {
+              "T1110.001": {
+                "name": "Password Guessing",
+                "rule_ids": ["100010", "100011"],
+                "description": "Detects brute force attacks"
+              }
+            }
+          }
+        }
+      },
+      "TA0007": {
+        "name": "Discovery",
+        "techniques": {
+          "T1046": {
+            "name": "Network Service Discovery",
+            "rule_ids": ["100050"],
+            "description": "Detects port scanning and service discovery"
+          }
+        }
+      },
+      "TA0008": {
+        "name": "Lateral Movement",
+        "techniques": {
+          "T1021": {
+            "name": "Remote Services",
+            "rule_ids": ["5715", "5716"],
+            "description": "Monitors SSH/RDP remote access"
+          }
+        }
+      },
+      "TA0011": {
+        "name": "Command and Control",
+        "techniques": {
+          "T1571": {
+            "name": "Non-Standard Port",
+            "rule_ids": ["100050"],
+            "description": "Detects unusual listening ports"
+          }
+        }
+      },
+      "TA0040": {
+        "name": "Impact",
+        "techniques": {
+          "T1485": {
+            "name": "Data Destruction",
+            "rule_ids": ["553"],
+            "description": "Detects file deletion events"
+          }
+        }
+      }
+    }
+  },
+  "coverage_summary": {
+    "tactics_covered": 9,
+    "tactics_total": 14,
+    "techniques_covered": 14,
+    "detection_rules_mapped": 25
+  }
+}

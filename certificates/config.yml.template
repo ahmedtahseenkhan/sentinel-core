@@ -1,0 +1,29 @@
+# ============================================================================
+# SentinelCore - Certificate Configuration Template
+# ============================================================================
+# This file defines the nodes for certificate generation.
+# Replace placeholder values with your actual node names and IPs.
+# ============================================================================
+
+nodes:
+  # Indexer nodes
+  indexer:
+    - name: sentinelcore-indexer-1
+      ip: SENTINELCORE_INDEXER_IP
+    # Uncomment for multi-node cluster:
+    # - name: sentinelcore-indexer-2
+    #   ip: SENTINELCORE_INDEXER_IP_2
+    # - name: sentinelcore-indexer-3
+    #   ip: SENTINELCORE_INDEXER_IP_3
+
+  # Manager / Server nodes
+  server:
+    - name: sentinelcore-manager-1
+      ip: SENTINELCORE_MANAGER_IP
+    # - name: sentinelcore-manager-2
+    #   ip: SENTINELCORE_MANAGER_IP_2
+
+  # Dashboard nodes
+  dashboard:
+    - name: sentinelcore-dashboard-1
+      ip: SENTINELCORE_DASHBOARD_IP

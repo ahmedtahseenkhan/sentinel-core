@@ -1,0 +1,90 @@
+{
+  "dashboard": {
+    "title": "SentinelCore Security Overview",
+    "uid": "sentinelcore-overview",
+    "tags": ["sentinelcore", "security", "wazuh"],
+    "timezone": "browser",
+    "refresh": "30s",
+    "panels": [
+      {
+        "title": "Active Agents",
+        "type": "stat",
+        "gridPos": { "x": 0, "y": 0, "w": 4, "h": 4 },
+        "targets": [
+          { "expr": "sentinelcore_agents_active", "legendFormat": "Active" }
+        ],
+        "fieldConfig": {
+          "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "value": 0, "color": "red" }, { "value": 1, "color": "green" }] } }
+        }
+      },
+      {
+        "title": "Disconnected Agents",
+        "type": "stat",
+        "gridPos": { "x": 4, "y": 0, "w": 4, "h": 4 },
+        "targets": [
+          { "expr": "sentinelcore_agents_disconnected", "legendFormat": "Disconnected" }
+        ],
+        "fieldConfig": {
+          "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "value": 0, "color": "green" }, { "value": 1, "color": "orange" }, { "value": 5, "color": "red" }] } }
+        }
+      },
+      {
+        "title": "Total Agents",
+        "type": "stat",
+        "gridPos": { "x": 8, "y": 0, "w": 4, "h": 4 },
+        "targets": [
+          { "expr": "sentinelcore_agents_total", "legendFormat": "Total" }
+        ]
+      },
+      {
+        "title": "API Status",
+        "type": "stat",
+        "gridPos": { "x": 12, "y": 0, "w": 4, "h": 4 },
+        "targets": [
+          { "expr": "sentinelcore_api_up", "legendFormat": "API" }
+        ],
+        "fieldConfig": {
+          "defaults": { "mappings": [{ "type": "value", "options": { "0": { "text": "DOWN", "color": "red" }, "1": { "text": "UP", "color": "green" } } }] }
+        }
+      },
+      {
+        "title": "Cluster Status",
+        "type": "stat",
+        "gridPos": { "x": 16, "y": 0, "w": 4, "h": 4 },
+        "targets": [
+          { "expr": "sentinelcore_cluster_running", "legendFormat": "Cluster" }
+        ],
+        "fieldConfig": {
+          "defaults": { "mappings": [{ "type": "value", "options": { "0": { "text": "STOPPED", "color": "red" }, "1": { "text": "RUNNING", "color": "green" } } }] }
+        }
+      },
+      {
+        "title": "Detection Rules",
+        "type": "stat",
+        "gridPos": { "x": 20, "y": 0, "w": 4, "h": 4 },
+        "targets": [
+          { "expr": "sentinelcore_rules_total", "legendFormat": "Rules" }
+        ]
+      },
+      {
+        "title": "Agent Status Over Time",
+        "type": "timeseries",
+        "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 },
+        "targets": [
+          { "expr": "sentinelcore_agents_active", "legendFormat": "Active" },
+          { "expr": "sentinelcore_agents_disconnected", "legendFormat": "Disconnected" },
+          { "expr": "sentinelcore_agents_pending", "legendFormat": "Pending" }
+        ]
+      },
+      {
+        "title": "Alerts Over Time",
+        "type": "timeseries",
+        "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 },
+        "targets": [
+          { "expr": "sentinelcore_alerts_total", "legendFormat": "Alerts" },
+          { "expr": "sentinelcore_events_received", "legendFormat": "Events" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+# ============================================================================
+# SentinelCore - Certificate Generator (Docker)
+# ============================================================================
+# Run this FIRST before starting the stack:
+#   docker-compose -f generate-certs.yml run --rm generator
+# ============================================================================
+
+services:
+  generator:
+    image: wazuh/wazuh-certs-generator:0.0.2
+    hostname: wazuh-certs-generator
+    volumes:
+      - ./config/wazuh_indexer_ssl_certs:/certificates
+      - ./config/certs.yml:/config/certs.yml

@@ -1,0 +1,137 @@
+{
+  "index_patterns": ["sentinelcore-states-*"],
+  "order": 1,
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 1,
+      "refresh_interval": "30s",
+      "codec": "best_compression",
+      "mapping": {
+        "total_fields": {
+          "limit": 2000
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "timestamp": {
+        "type": "date",
+        "format": "date_optional_time||epoch_millis"
+      },
+      "agent": {
+        "properties": {
+          "id": { "type": "keyword" },
+          "name": { "type": "keyword" },
+          "ip": { "type": "ip" },
+          "version": { "type": "keyword" },
+          "os": {
+            "properties": {
+              "name": { "type": "keyword" },
+              "version": { "type": "keyword" },
+              "platform": { "type": "keyword" },
+              "arch": { "type": "keyword" }
+            }
+          },
+          "status": { "type": "keyword" },
+          "group": { "type": "keyword" },
+          "node_name": { "type": "keyword" }
+        }
+      },
+      "vulnerability": {
+        "properties": {
+          "cve": { "type": "keyword" },
+          "title": { "type": "text", "fields": { "keyword": { "type": "keyword", "ignore_above": 512 } } },
+          "severity": { "type": "keyword" },
+          "package": {
+            "properties": {
+              "name": { "type": "keyword" },
+              "version": { "type": "keyword" },
+              "architecture": { "type": "keyword" },
+              "condition": { "type": "keyword" }
+            }
+          },
+          "published": { "type": "date" },
+          "updated": { "type": "date" },
+          "reference": { "type": "keyword" },
+          "cvss": {
+            "properties": {
+              "cvss2": {
+                "properties": {
+                  "base_score": { "type": "float" },
+                  "vector": { "type": "keyword" }
+                }
+              },
+              "cvss3": {
+                "properties": {
+                  "base_score": { "type": "float" },
+                  "vector": { "type": "keyword" }
+                }
+              }
+            }
+          },
+          "status": { "type": "keyword" },
+          "detected_at": { "type": "date" }
+        }
+      },
+      "sca": {
+        "properties": {
+          "policy_id": { "type": "keyword" },
+          "check": {
+            "properties": {
+              "id": { "type": "keyword" },
+              "title": { "type": "text" },
+              "result": { "type": "keyword" },
+              "compliance": { "type": "object", "enabled": false }
+            }
+          },
+          "scan_id": { "type": "keyword" },
+          "score": { "type": "float" },
+          "passed": { "type": "integer" },
+          "failed": { "type": "integer" },
+          "invalid": { "type": "integer" },
+          "total_checks": { "type": "integer" }
+        }
+      },
+      "hardware": {
+        "properties": {
+          "cpu": {
+            "properties": {
+              "name": { "type": "keyword" },
+              "cores": { "type": "integer" },
+              "mhz": { "type": "float" }
+            }
+          },
+          "ram": {
+            "properties": {
+              "total": { "type": "long" },
+              "free": { "type": "long" },
+              "usage": { "type": "float" }
+            }
+          }
+        }
+      },
+      "network": {
+        "properties": {
+          "iface": {
+            "properties": {
+              "name": { "type": "keyword" },
+              "mac": { "type": "keyword" },
+              "state": { "type": "keyword" },
+              "ipv4": {
+                "properties": {
+                  "address": { "type": "ip" },
+                  "netmask": { "type": "keyword" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "aliases": {
+    "sentinelcore-states": {}
+  }
+}

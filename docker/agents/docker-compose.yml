@@ -1,0 +1,96 @@
+# ============================================================================
+# SentinelCore - Docker Agents (3 Agents)
+# ============================================================================
+# Usage:
+#   1. Set your manager IP:  export MANAGER_IP=<your_manager_ip>
+#   2. Launch all agents:    docker-compose up -d
+#   3. Check status:         docker-compose ps
+#   4. View logs:            docker-compose logs -f
+#   5. Stop all:             docker-compose down
+# ============================================================================
+
+services:
+  # ─── Agent 1 ───────────────────────────────────────────────────────────
+  sentinelcore-agent-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelcore-agent-1
+    hostname: sentinelcore-agent-1
+    environment:
+      - WAZUH_MANAGER=${MANAGER_IP:-SENTINELCORE_MANAGER_IP}
+      - WAZUH_AGENT_NAME=docker-agent-01
+      - WAZUH_AGENT_GROUP=default
+      - WAZUH_REGISTRATION_PASSWORD=${AGENT_PASSWORD:-}
+    restart: unless-stopped
+    networks:
+      - sentinelcore-net
+
+  # ─── Agent 2 ───────────────────────────────────────────────────────────
+  sentinelcore-agent-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelcore-agent-2
+    hostname: sentinelcore-agent-2
+    environment:
+      - WAZUH_MANAGER=${MANAGER_IP:-SENTINELCORE_MANAGER_IP}
+      - WAZUH_AGENT_NAME=docker-agent-02
+      - WAZUH_AGENT_GROUP=default
+      - WAZUH_REGISTRATION_PASSWORD=${AGENT_PASSWORD:-}
+    restart: unless-stopped
+    networks:
+      - sentinelcore-net
+
+  # ─── Agent 3 ───────────────────────────────────────────────────────────
+  sentinelcore-agent-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelcore-agent-3
+    hostname: sentinelcore-agent-3
+    environment:
+      - WAZUH_MANAGER=${MANAGER_IP:-SENTINELCORE_MANAGER_IP}
+      - WAZUH_AGENT_NAME=docker-agent-03
+      - WAZUH_AGENT_GROUP=default
+      - WAZUH_REGISTRATION_PASSWORD=${AGENT_PASSWORD:-}
+    restart: unless-stopped
+    networks:
+      - sentinelcore-net
+
+  # ─── Agent 4 ───────────────────────────────────────────────────────────
+  sentinelcore-agent-4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelcore-agent-4
+    hostname: sentinelcore-agent-4
+    environment:
+      - WAZUH_MANAGER=${MANAGER_IP:-SENTINELCORE_MANAGER_IP}
+      - WAZUH_AGENT_NAME=docker-agent-04
+      - WAZUH_AGENT_GROUP=default
+      - WAZUH_REGISTRATION_PASSWORD=${AGENT_PASSWORD:-}
+    restart: unless-stopped
+    networks:
+      - sentinelcore-net
+
+  # ─── Agent 5 ───────────────────────────────────────────────────────────
+  sentinelcore-agent-5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelcore-agent-5
+    hostname: sentinelcore-agent-5
+    environment:
+      - WAZUH_MANAGER=${MANAGER_IP:-SENTINELCORE_MANAGER_IP}
+      - WAZUH_AGENT_NAME=docker-agent-05
+      - WAZUH_AGENT_GROUP=default
+      - WAZUH_REGISTRATION_PASSWORD=${AGENT_PASSWORD:-}
+    restart: unless-stopped
+    networks:
+      - sentinelcore-net
+
+networks:
+  sentinelcore-net:
+    name: sentinelcore-stack_default
+    external: true

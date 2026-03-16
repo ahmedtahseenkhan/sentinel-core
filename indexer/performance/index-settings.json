@@ -1,0 +1,31 @@
+{
+  "index": {
+    "refresh_interval": "5s",
+    "number_of_replicas": 1,
+    "translog": {
+      "durability": "async",
+      "sync_interval": "5s",
+      "flush_threshold_size": "1gb"
+    },
+    "merge": {
+      "scheduler": {
+        "max_thread_count": 1
+      },
+      "policy": {
+        "max_merged_segment": "5gb",
+        "segments_per_tier": 10,
+        "max_merge_at_once": 10
+      }
+    },
+    "search": {
+      "idle": {
+        "after": "30s"
+      }
+    },
+    "unassigned": {
+      "node_left": {
+        "delayed_timeout": "5m"
+      }
+    }
+  }
+}

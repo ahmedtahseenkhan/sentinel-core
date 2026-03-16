@@ -1,0 +1,96 @@
+<!--
+  ============================================================================
+  SentinelCore - Custom Log Decoders
+  ============================================================================
+  Custom decoders for parsing application-specific log formats.
+  Decoders extract structured fields from raw log lines.
+  
+  Reference: https://documentation.wazuh.com/current/user-manual/ruleset/
+  ============================================================================
+-->
+
+<!-- ============================= -->
+<!-- SentinelCore Application Logs -->
+<!-- ============================= -->
+
+<!-- Parent decoder for custom application logs -->
+<decoder name="sentinelcore-app">
+  <prematch>^SentinelCore\|</prematch>
+</decoder>
+
+<!-- Extract fields from SentinelCore application log -->
+<decoder name="sentinelcore-app">
+  <parent>sentinelcore-app</parent>
+  <regex>^SentinelCore\|(\S+)\|(\S+)\|(\S+)\|(.+)$</regex>
+  <order>status,module,srcuser,extra_data</order>
+</decoder>
+
+<!-- ============================= -->
+<!-- Custom Web Application Logs   -->
+<!-- ============================= -->
+
+<!-- Decoder for custom web application access logs -->
+<decoder name="sentinelcore-webapp">
+  <prematch>^\[WEBAPP\]</prematch>
+</decoder>
+
+<decoder name="sentinelcore-webapp">
+  <parent>sentinelcore-webapp</parent>
+  <regex>^\[WEBAPP\] (\S+) (\S+) (\d+\.\d+\.\d+\.\d+) "(\S+) (\S+)" (\d+) (\d+)</regex>
+  <order>timestamp,user,srcip,action,url,status,response_time</order>
+</decoder>
+
+<!-- ============================= -->
+<!-- Custom API Gateway Logs       -->
+<!-- ============================= -->
+
+<!-- Decoder for API gateway logs -->
+<decoder name="sentinelcore-api">
+  <prematch>^API-GW:</prematch>
+</decoder>
+
+<decoder name="sentinelcore-api">
+  <parent>sentinelcore-api</parent>
+  <regex>^API-GW: (\S+) \[(\S+)\] (\d+\.\d+\.\d+\.\d+):(\d+) -> (\S+) (\d+) (\d+)ms</regex>
+  <order>timestamp,api_key,srcip,srcport,url,status,response_time</order>
+</decoder>
+
+<!-- ============================= -->
+<!-- Custom Authentication Logs    -->
+<!-- ============================= -->
+
+<!-- Decoder for custom authentication system logs -->
+<decoder name="sentinelcore-auth">
+  <prematch>^AUTH:</prematch>
+</decoder>
+
+<decoder name="sentinelcore-auth">
+  <parent>sentinelcore-auth</parent>
+  <regex>^AUTH: (\S+) user=(\S+) src=(\d+\.\d+\.\d+\.\d+) action=(\S+) result=(\S+)</regex>
+  <order>timestamp,srcuser,srcip,action,status</order>
+</decoder>
+
+<!-- ============================= -->
+<!-- Custom VPN Connection Logs    -->
+<!-- ============================= -->
+
+<!-- Decoder for VPN connection logs -->
+<decoder name="sentinelcore-vpn">
+  <prematch>^VPN-LOG:</prematch>
+</decoder>
+
+<decoder name="sentinelcore-vpn">
+  <parent>sentinelcore-vpn</parent>
+  <regex>^VPN-LOG: (\S+) user=(\S+) src=(\d+\.\d+\.\d+\.\d+) tunnel=(\S+) status=(\S+)</regex>
+  <order>timestamp,srcuser,srcip,tunnel_id,status</order>
+</decoder>
+
+<!-- ============================= -->
+<!-- JSON Format Decoder           -->
+<!-- ============================= -->
+
+<!-- Generic JSON log decoder for custom applications -->
+<decoder name="sentinelcore-json">
+  <prematch>^{"sentinelcore":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>

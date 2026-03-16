@@ -1,0 +1,68 @@
+<!--
+  ============================================================================
+  SentinelCore - HIPAA Compliance Rules
+  ============================================================================
+  Custom rules for HIPAA compliance monitoring.
+  Sections: 164.312, 164.310, 164.308
+  ============================================================================
+-->
+
+<group name="sentinelcore,hipaa,">
+
+  <!-- 164.312(a)(1): Access Control -->
+  <rule id="112001" level="10">
+    <if_sid>5403</if_sid>
+    <description>SentinelCore HIPAA 164.312(a)(1): Unauthorized access attempt.</description>
+    <group>hipaa_164.312.a.1,access_control,</group>
+  </rule>
+
+  <rule id="112002" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>5710</if_matched_sid>
+    <same_source_ip />
+    <description>SentinelCore HIPAA 164.312(a)(1): Multiple failed login attempts - brute force.</description>
+    <group>hipaa_164.312.a.1,brute_force,</group>
+  </rule>
+
+  <!-- 164.312(a)(2)(i): Unique User Identification -->
+  <rule id="112010" level="5">
+    <if_sid>5501</if_sid>
+    <description>SentinelCore HIPAA 164.312(a)(2)(i): User activity logged for audit.</description>
+    <group>hipaa_164.312.a.2.I,user_audit,</group>
+  </rule>
+
+  <!-- 164.312(b): Audit Controls -->
+  <rule id="112020" level="10">
+    <if_sid>521</if_sid>
+    <description>SentinelCore HIPAA 164.312(b): Audit log tampering detected.</description>
+    <group>hipaa_164.312.b,audit_tampering,</group>
+  </rule>
+
+  <!-- 164.312(c)(1): Integrity Controls -->
+  <rule id="112030" level="8">
+    <if_sid>550</if_sid>
+    <description>SentinelCore HIPAA 164.312(c)(1): System integrity change - file modified ($(file)).</description>
+    <group>hipaa_164.312.c.1,integrity,</group>
+  </rule>
+
+  <!-- 164.312(e)(1): Transmission Security -->
+  <rule id="112040" level="7">
+    <if_sid>533</if_sid>
+    <description>SentinelCore HIPAA 164.312(e)(1): New network port detected - transmission security.</description>
+    <group>hipaa_164.312.e.1,network_security,</group>
+  </rule>
+
+  <!-- 164.308(a)(5)(ii)(C): Log-in Monitoring -->
+  <rule id="112050" level="5">
+    <if_sid>5715</if_sid>
+    <description>SentinelCore HIPAA 164.308(a)(5)(ii)(C): Successful login recorded.</description>
+    <group>hipaa_164.308.a.5.II.C,login_monitoring,</group>
+  </rule>
+
+  <!-- 164.310(a)(1): Facility Access Controls -->
+  <rule id="112060" level="12">
+    <if_sid>5712</if_sid>
+    <description>SentinelCore HIPAA 164.310(a)(1): Potential unauthorized facility/system access.</description>
+    <group>hipaa_164.310.a.1,unauthorized_access,</group>
+  </rule>
+
+</group>

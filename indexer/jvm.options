@@ -1,0 +1,63 @@
+# ============================================================================
+# SentinelCore Indexer - JVM Options
+# ============================================================================
+# Adjust heap size based on available system memory.
+# Recommended: Set to 50% of available RAM, but no more than 32GB.
+# Both -Xms and -Xmx should always be the same value.
+# ============================================================================
+
+## --- Heap Size ---
+## Set min and max heap to the same value to avoid resizing pauses.
+## For a server with 8GB RAM, use 4g. For 16GB RAM, use 8g.
+-Xms4g
+-Xmx4g
+
+## --- GC Configuration ---
+## Use G1GC for better latency characteristics
+8-13:-XX:+UseG1GC
+8-13:-XX:G1ReservePercent=25
+8-13:-XX:InitiatingHeapOccupancyPercent=30
+
+## JDK 14+ use ZGC (uncomment to enable)
+# 14-:-XX:+UseZGC
+
+## --- GC Logging ---
+8-13:-XX:+PrintGCDetails
+8-13:-XX:+PrintGCDateStamps
+8-13:-XX:+PrintTenuringDistribution
+8-13:-XX:+PrintGCApplicationStoppedTime
+8-13:-Xloggc:/var/log/wazuh-indexer/gc.log
+8-13:-XX:+UseGCLogFileRotation
+8-13:-XX:NumberOfGCLogFiles=32
+8-13:-XX:GCLogFileSize=64m
+
+## JDK 9+ GC logging
+9-:-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/wazuh-indexer/gc.log:utctime,pid,tags:filecount=32,filesize=64m
+
+## --- Performance ---
+# Disable explicit GC calls
+-XX:+DisableExplicitGC
+
+# Pre-touch memory pages used by the JVM
+-XX:+AlwaysPreTouch
+
+# Set thread stack size
+-Xss1m
+
+# Use /dev/urandom for random number generation
+-Djava.security.egd=file:/dev/./urandom
+
+## --- Error Handling ---
+# Heap dump on out of memory error
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/var/lib/wazuh-indexer
+
+# Fatal error log file
+-XX:ErrorFile=/var/log/wazuh-indexer/hs_err_pid%p.log
+
+## --- Security ---
+# Disable DNS caching (useful when DNS changes frequently)
+-XX:+UseCompressedOops
+
+## --- Temp directory ---
+-Djava.io.tmpdir=/tmp

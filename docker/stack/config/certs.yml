@@ -1,0 +1,10 @@
+nodes:
+  # Wazuh indexer nodes
+  indexer:
+    - name: sentinelcore-indexer
+      ip: 127.0.0.1
+
+  # Wazuh server nodes
+  server:
+    - name: sentinelcore-manager
+      ip: 127.0.0.1

@@ -1,0 +1,53 @@
+# ============================================================================
+# SentinelCore - Prometheus Configuration
+# ============================================================================
+
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  scrape_timeout: 10s
+
+  external_labels:
+    monitor: 'sentinelcore-monitoring'
+    environment: 'production'
+
+# Alerting rules
+rule_files:
+  # - "sentinelcore-alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # SentinelCore Wazuh Exporter
+  - job_name: 'sentinelcore-wazuh'
+    static_configs:
+      - targets: ['SENTINELCORE_MANAGER_IP:9101']
+        labels:
+          component: 'wazuh-manager'
+
+  # Node Exporter (system metrics)
+  - job_name: 'sentinelcore-nodes'
+    static_configs:
+      - targets:
+          - 'SENTINELCORE_MANAGER_IP:9100'
+          - 'SENTINELCORE_INDEXER_IP:9100'
+        labels:
+          component: 'infrastructure'
+
+  # OpenSearch Indexer metrics
+  - job_name: 'sentinelcore-indexer'
+    metrics_path: '/_prometheus/metrics'
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    basic_auth:
+      username: 'admin'
+      password: 'SENTINELCORE_AUTH_PASS'
+    static_configs:
+      - targets: ['SENTINELCORE_INDEXER_IP:9200']
+        labels:
+          component: 'wazuh-indexer'
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

@@ -1,0 +1,85 @@
+# ============================================================================
+# SentinelCore Indexer - OpenSearch Configuration
+# ============================================================================
+# This is the main configuration for the SentinelCore Indexer (OpenSearch).
+# Replace SENTINELCORE_* placeholders with your actual values.
+# ============================================================================
+
+# --- Cluster ---
+cluster.name: sentinelcore-cluster
+node.name: sentinelcore-indexer-1
+
+# --- Node Roles ---
+node.master: true
+node.data: true
+node.ingest: true
+
+# --- Paths ---
+path.data: /var/lib/wazuh-indexer
+path.logs: /var/log/wazuh-indexer
+
+# --- Network ---
+network.host: SENTINELCORE_INDEXER_IP
+http.port: 9200
+transport.port: 9300-9400
+
+# --- Discovery ---
+# For single-node:
+discovery.type: single-node
+# For multi-node cluster, uncomment:
+# discovery.seed_hosts:
+#   - sentinelcore-indexer-1
+#   - sentinelcore-indexer-2
+#   - sentinelcore-indexer-3
+# cluster.initial_master_nodes:
+#   - sentinelcore-indexer-1
+#   - sentinelcore-indexer-2
+#   - sentinelcore-indexer-3
+
+# --- Memory ---
+bootstrap.memory_lock: true
+
+# --- Security Plugin ---
+plugins.security.ssl.transport.pemcert_filepath: /etc/wazuh-indexer/certs/indexer.pem
+plugins.security.ssl.transport.pemkey_filepath: /etc/wazuh-indexer/certs/indexer-key.pem
+plugins.security.ssl.transport.pemtrustedcas_filepath: /etc/wazuh-indexer/certs/root-ca.pem
+plugins.security.ssl.http.enabled: true
+plugins.security.ssl.http.pemcert_filepath: /etc/wazuh-indexer/certs/indexer.pem
+plugins.security.ssl.http.pemkey_filepath: /etc/wazuh-indexer/certs/indexer-key.pem
+plugins.security.ssl.http.pemtrustedcas_filepath: /etc/wazuh-indexer/certs/root-ca.pem
+plugins.security.ssl.transport.enforce_hostname_verification: false
+
+plugins.security.authcz.admin_dn:
+  - "CN=admin,OU=SentinelCore,O=SentinelCore,L=Security,ST=NA,C=US"
+
+plugins.security.nodes_dn:
+  - "CN=sentinelcore-indexer-1,OU=SentinelCore,O=SentinelCore,L=Security,ST=NA,C=US"
+  - "CN=sentinelcore-indexer-2,OU=SentinelCore,O=SentinelCore,L=Security,ST=NA,C=US"
+  - "CN=sentinelcore-indexer-3,OU=SentinelCore,O=SentinelCore,L=Security,ST=NA,C=US"
+
+plugins.security.check_snapshot_restore_write_privileges: true
+plugins.security.enable_snapshot_restore_privilege: true
+plugins.security.restapi.roles_enabled:
+  - "all_access"
+  - "security_rest_api_access"
+
+plugins.security.system_indices.enabled: true
+plugins.security.system_indices.indices:
+  - ".opendistro-alerting-config"
+  - ".opendistro-alerting-alert*"
+  - ".opendistro-anomaly-results*"
+  - ".opendistro-anomaly-detector*"
+  - ".opendistro-anomaly-checkpoints"
+  - ".opendistro-anomaly-detection-state"
+  - ".opendistro-reports-*"
+  - ".opendistro-notifications-*"
+  - ".opendistro-notebooks"
+  - ".opensearch-observability"
+  - ".ql-datasources"
+
+# --- Index Settings ---
+# Allow deleting indices by wildcard pattern
+action.destructive_requires_name: true
+
+# --- Compatibility ---
+compatibility.override_main_response_version: true

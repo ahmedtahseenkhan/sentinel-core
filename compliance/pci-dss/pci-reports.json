@@ -1,0 +1,93 @@
+{
+  "name": "SentinelCore PCI DSS Compliance Report",
+  "description": "Template for PCI DSS compliance reporting",
+  "version": "4.0",
+  "report_sections": [
+    {
+      "requirement": "1",
+      "title": "Install and Maintain Network Security Controls",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_1" } }
+      }
+    },
+    {
+      "requirement": "2",
+      "title": "Apply Secure Configurations to All System Components",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_2" } }
+      }
+    },
+    {
+      "requirement": "5",
+      "title": "Protect All Systems Against Malware",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_5" } }
+      }
+    },
+    {
+      "requirement": "6",
+      "title": "Develop and Maintain Secure Systems and Software",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_6" } }
+      }
+    },
+    {
+      "requirement": "7",
+      "title": "Restrict Access to System Components",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_7" } }
+      }
+    },
+    {
+      "requirement": "8",
+      "title": "Identify Users and Authenticate Access",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_8" } }
+      }
+    },
+    {
+      "requirement": "10",
+      "title": "Log and Monitor All Access to System Components",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_10" } }
+      }
+    },
+    {
+      "requirement": "11",
+      "title": "Test Security of Systems and Networks Regularly",
+      "query": {
+        "index": "sentinelcore-alerts-*",
+        "filter": { "match": { "rule.groups": "pci_dss_11" } }
+      }
+    }
+  ],
+  "dashboard_panels": {
+    "alert_summary": {
+      "type": "metric",
+      "query": "rule.groups:pci_dss_*",
+      "aggregation": "count"
+    },
+    "requirement_breakdown": {
+      "type": "pie",
+      "query": "rule.groups:pci_dss_*",
+      "aggregation": { "field": "rule.groups", "size": 20 }
+    },
+    "timeline": {
+      "type": "line",
+      "query": "rule.groups:pci_dss_*",
+      "aggregation": { "date_histogram": { "field": "timestamp", "interval": "1d" } }
+    },
+    "top_agents": {
+      "type": "table",
+      "query": "rule.groups:pci_dss_*",
+      "aggregation": { "field": "agent.name", "size": 10 }
+    }
+  }
+}

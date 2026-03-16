@@ -1,0 +1,56 @@
+# ============================================================================
+# SentinelCore - Filebeat Configuration
+# ============================================================================
+# Forwards Wazuh alerts from the Manager to the SentinelCore Indexer.
+# Replace SENTINELCORE_* placeholders with your actual values.
+# ============================================================================
+
+# --- Filebeat Inputs ---
+filebeat.inputs: []
+
+# --- Filebeat Modules ---
+filebeat.modules:
+  - module: wazuh
+    alerts:
+      enabled: true
+    archives:
+      enabled: false
+
+# --- Index Template ---
+setup.template.json.enabled: true
+setup.template.json.path: "/etc/filebeat/wazuh-template.json"
+setup.template.json.name: "sentinelcore-alerts"
+setup.template.overwrite: true
+setup.ilm.enabled: false
+
+# --- Output to SentinelCore Indexer ---
+output.elasticsearch:
+  hosts: ["https://SENTINELCORE_INDEXER_IP:9200"]
+  protocol: https
+  username: "admin"
+  password: "SENTINELCORE_AUTH_PASS"
+  ssl.certificate_authorities:
+    - /etc/filebeat/certs/root-ca.pem
+  ssl.certificate: "/etc/filebeat/certs/filebeat.pem"
+  ssl.key: "/etc/filebeat/certs/filebeat-key.pem"
+  index: "sentinelcore-alerts-4.x-%{+yyyy.MM.dd}"
+  pipeline: "sentinelcore-alerts-pipeline"
+
+# --- Logging ---
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat.log
+  keepfiles: 7
+  permissions: 0644
+
+# --- Processors ---
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_fields:
+      target: sentinelcore
+      fields:
+        company: "SENTINELCORE_COMPANY"
+        environment: "production"

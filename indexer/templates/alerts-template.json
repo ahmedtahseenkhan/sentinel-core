@@ -1,0 +1,136 @@
+{
+  "index_patterns": ["sentinelcore-alerts-*"],
+  "order": 1,
+  "settings": {
+    "index": {
+      "number_of_shards": 3,
+      "number_of_replicas": 1,
+      "refresh_interval": "5s",
+      "codec": "best_compression",
+      "max_result_window": 10000,
+      "mapping": {
+        "total_fields": {
+          "limit": 5000
+        }
+      },
+      "translog": {
+        "durability": "request",
+        "flush_threshold_size": "512mb"
+      },
+      "lifecycle": {
+        "name": "sentinelcore-alerts-policy",
+        "rollover_alias": "sentinelcore-alerts"
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "timestamp": {
+        "type": "date",
+        "format": "date_optional_time||epoch_millis"
+      },
+      "rule": {
+        "properties": {
+          "id": { "type": "keyword" },
+          "level": { "type": "integer" },
+          "description": { "type": "text", "fields": { "keyword": { "type": "keyword", "ignore_above": 512 } } },
+          "groups": { "type": "keyword" },
+          "mitre": {
+            "properties": {
+              "id": { "type": "keyword" },
+              "tactic": { "type": "keyword" },
+              "technique": { "type": "keyword" }
+            }
+          },
+          "pci_dss": { "type": "keyword" },
+          "gdpr": { "type": "keyword" },
+          "hipaa": { "type": "keyword" },
+          "nist_800_53": { "type": "keyword" },
+          "tsc": { "type": "keyword" }
+        }
+      },
+      "agent": {
+        "properties": {
+          "id": { "type": "keyword" },
+          "name": { "type": "keyword" },
+          "ip": { "type": "ip" },
+          "labels": { "type": "object", "enabled": false }
+        }
+      },
+      "manager": {
+        "properties": {
+          "name": { "type": "keyword" }
+        }
+      },
+      "data": {
+        "properties": {
+          "srcip": { "type": "ip" },
+          "srcport": { "type": "integer" },
+          "dstip": { "type": "ip" },
+          "dstport": { "type": "integer" },
+          "srcuser": { "type": "keyword" },
+          "dstuser": { "type": "keyword" },
+          "protocol": { "type": "keyword" },
+          "action": { "type": "keyword" },
+          "status": { "type": "keyword" },
+          "id": { "type": "keyword" },
+          "url": { "type": "text", "fields": { "keyword": { "type": "keyword", "ignore_above": 2048 } } },
+          "extra_data": { "type": "text" }
+        }
+      },
+      "syscheck": {
+        "properties": {
+          "path": { "type": "keyword" },
+          "event": { "type": "keyword" },
+          "size_after": { "type": "long" },
+          "size_before": { "type": "long" },
+          "md5_after": { "type": "keyword" },
+          "md5_before": { "type": "keyword" },
+          "sha1_after": { "type": "keyword" },
+          "sha1_before": { "type": "keyword" },
+          "sha256_after": { "type": "keyword" },
+          "sha256_before": { "type": "keyword" },
+          "uname_after": { "type": "keyword" },
+          "gname_after": { "type": "keyword" },
+          "perm_after": { "type": "keyword" },
+          "diff": { "type": "text" }
+        }
+      },
+      "location": { "type": "keyword" },
+      "decoder": {
+        "properties": {
+          "name": { "type": "keyword" },
+          "parent": { "type": "keyword" }
+        }
+      },
+      "full_log": { "type": "text" },
+      "predecoder": {
+        "properties": {
+          "program_name": { "type": "keyword" },
+          "timestamp": { "type": "keyword" },
+          "hostname": { "type": "keyword" }
+        }
+      },
+      "GeoLocation": {
+        "properties": {
+          "city_name": { "type": "keyword" },
+          "country_name": { "type": "keyword" },
+          "region_name": { "type": "keyword" },
+          "location": { "type": "geo_point" }
+        }
+      },
+      "sentinelcore": {
+        "properties": {
+          "company": { "type": "keyword" },
+          "environment": { "type": "keyword" },
+          "severity": { "type": "keyword" },
+          "custom_tag": { "type": "keyword" }
+        }
+      }
+    }
+  },
+  "aliases": {
+    "sentinelcore-alerts": {}
+  }
+}

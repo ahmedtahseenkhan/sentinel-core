@@ -1,0 +1,28 @@
+{
+  "index_patterns": [
+    {
+      "id": "sentinelcore-alerts-*",
+      "title": "sentinelcore-alerts-*",
+      "timeFieldName": "timestamp",
+      "fields": "[]"
+    },
+    {
+      "id": "sentinelcore-states-*",
+      "title": "sentinelcore-states-*",
+      "timeFieldName": "timestamp",
+      "fields": "[]"
+    },
+    {
+      "id": "sentinelcore-monitoring-*",
+      "title": "sentinelcore-monitoring-*",
+      "timeFieldName": "timestamp",
+      "fields": "[]"
+    },
+    {
+      "id": "sentinelcore-statistics-*",
+      "title": "sentinelcore-statistics-*",
+      "timeFieldName": "timestamp",
+      "fields": "[]"
+    }
+  ]
+}

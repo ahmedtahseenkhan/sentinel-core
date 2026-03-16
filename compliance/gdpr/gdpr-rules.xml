@@ -1,0 +1,54 @@
+<!--
+  ============================================================================
+  SentinelCore - GDPR Compliance Rules
+  ============================================================================
+  Custom rules for GDPR compliance monitoring.
+  Articles: 5, 25, 30, 32, 33, 34, 35
+  ============================================================================
+-->
+
+<group name="sentinelcore,gdpr,">
+
+  <!-- Article 5: Principles (data integrity) -->
+  <rule id="111001" level="8">
+    <if_sid>550</if_sid>
+    <description>SentinelCore GDPR Art.5: Data integrity - critical file modified ($(file)).</description>
+    <group>gdpr_II_5.1.f,file_integrity,</group>
+  </rule>
+
+  <!-- Article 25: Data protection by design -->
+  <rule id="111010" level="7">
+    <if_sid>5402</if_sid>
+    <description>SentinelCore GDPR Art.25: Successful privilege escalation detected.</description>
+    <group>gdpr_IV_25.2,privilege_escalation,</group>
+  </rule>
+
+  <!-- Article 32: Security of processing -->
+  <rule id="111020" level="10" frequency="8" timeframe="120">
+    <if_matched_sid>5710</if_matched_sid>
+    <same_source_ip />
+    <description>SentinelCore GDPR Art.32: Brute force attack - security of processing breach.</description>
+    <group>gdpr_IV_32.2,brute_force,</group>
+  </rule>
+
+  <rule id="111021" level="12">
+    <if_sid>510</if_sid>
+    <description>SentinelCore GDPR Art.32: Malware detected - security compromise.</description>
+    <group>gdpr_IV_32.2,malware,</group>
+  </rule>
+
+  <!-- Article 33: Notification of breach -->
+  <rule id="111030" level="12">
+    <if_sid>5712</if_sid>
+    <description>SentinelCore GDPR Art.33: Potential data breach - unauthorized access detected.</description>
+    <group>gdpr_IV_33,data_breach,</group>
+  </rule>
+
+  <!-- Article 35: Data protection impact -->
+  <rule id="111040" level="8">
+    <if_sid>5401</if_sid>
+    <description>SentinelCore GDPR Art.35: Administrative action logged for impact assessment.</description>
+    <group>gdpr_IV_35.7.d,admin_action,</group>
+  </rule>
+
+</group>
